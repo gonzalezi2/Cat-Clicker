@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Cat Clicker</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+      .image {
+        display: inline-block;
+        width: 50%;
+      }
+      img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <figure>
+      <img src="./cat.jpg" id="cat-image" alt="lovely cat picture">
+      <figcaption>Photo by <a href="https://unsplash.com/@miklevasilyev">Mikhail Vasilyev</a> on Unsplash</figcaption>
+    </figure>     -->
+    <div id="cat-container"></div>
+    <script>      
+      var catContainer = document.getElementById("cat-container");
+      var cats = [
+        {
+          id: 0,
+          name: "Romulus",
+          description: "A cuddly cat",
+          url: "./romulus.jpg",
+          clicks: 0
+        },
+        {
+          id: 1,
+          name: "Remus",
+          description: "A fierce cat",
+          url: "./remus.jpg",
+          clicks: 0
+        }
+      ];
+      // Add cat images to DOM so eventListeners can work
+      cats.forEach(function(cat) {
+        createCat(cat);
+      });
+
+      function createCat(cat) {
+        // Create Div to put image and counter in
+        var div = document.createElement("div");
+
+        // Add class to change CSS styles
+        div.classList.add("image");
+
+        // Create text for cat name and number of clicks
+        var header = document.createElement("h2");
+        header.id = "cat-header-" + cat.id;
+        header.innerText = createImageHeader(cat);
+
+        var image = createImage(cat);
+
+        // Append header and image elements to div
+        div.appendChild(header);
+        div.appendChild(image);
+
+        // Add Event listener
+        image.addEventListener("click", function() {          
+          cat.clicks++;
+          updateClicks(cat);
+        });
+
+        // Add to HTML
+        catContainer.appendChild(div);
+      };
+      function createImage(cat) {
+        // Create Image element with id and other attributes
+        var image = document.createElement("img");
+        image.id = "cat-" + cat.id;
+        image.src = cat.url;
+        image.alt = cat.description;
+        return image;
+      }
+      function createImageHeader(cat) {
+        return cat.name + " - " + cat.clicks + " clicks";
+      }      
+      function updateClicks(cat) {
+        document.getElementById("cat-header-" + cat.id).innerText = createImageHeader(cat);
+      }
+
+    </script>
+  </body>
+</html>
