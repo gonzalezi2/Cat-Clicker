@@ -15,26 +15,45 @@
         padding: 0;
         text-align: center;
       }
-      .image {
-        display: inline-block;
-        width: 50%;
+      h1, h2, h3, h4, h5, h6, p {
+        margin: 0;
       }
-      img {
+      /* STYLES FOR SELECTED CAT */
+      #selected-cat {
+        height: 65vh;
+      }
+      .selected-cat-container {
+        height: calc(100% - 28px);
+      }
+      .selected-cat-container img {
+        height: 100%;
+      }
+      /* STYLES FOR THE LIST OF CATS */
+      #cat-list {
+        height: 35vh;
+        display: flex;
+      }
+      .image {
+        height: 100%;
+      }
+      .image img {
         width: 100%;
-        height: 300px;
         object-fit: cover;
-        cursor: pointer;
+        height: calc(100% - 28px);
       }
     </style>
   </head>
   <body>
-    <!-- <figure>
-      <img src="./cat.jpg" id="cat-image" alt="lovely cat picture">
-      <figcaption>Photo by <a href="https://unsplash.com/@miklevasilyev">Mikhail Vasilyev</a> on Unsplash</figcaption>
-    </figure>     -->
-    <div id="cat-container"></div>
+    <div id="selected-cat">
+      <h2>Please Select a cat</h2>
+      <div class="selected-cat-container">
+        <img src="./cat-placeholder.png" alt="cat silhouette">
+      </div>
+    </div>
+    <div id="cat-list"></div>
     <script>      
-      var catContainer = document.getElementById("cat-container");
+      var catContainer = document.getElementById("selected-cat");
+      var catList = document.getElementById("cat-list");
       var cats = [
         {
           id: 0,
@@ -48,6 +67,27 @@
           name: "Remus",
           description: "A fierce cat",
           url: "./remus.jpg",
+          clicks: 0
+        },
+        {
+          id: 2,
+          name: "Brutus",
+          description: "He's very brutal and not very loyal",
+          url: "./brutus.jpg",
+          clicks: 0
+        },
+        {
+          id: 3,
+          name: "Caesar",
+          description: "A leader of cats",
+          url: "./caesar.jpg",
+          clicks: 0
+        },
+        {
+          id: 4,
+          name: "Octavian",
+          description: "The people's cat",
+          url: "./octavian.jpg",
           clicks: 0
         }
       ];
@@ -81,7 +121,7 @@
         });
 
         // Add to HTML
-        catContainer.appendChild(div);
+        catList.appendChild(div);
       };
       function createImage(cat) {
         // Create Image element with id and other attributes
