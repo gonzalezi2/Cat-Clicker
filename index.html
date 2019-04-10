@@ -22,21 +22,18 @@
       #selected-cat {
         height: 65vh;
       }
-      .selected-cat-container {
-        height: calc(100% - 28px);
+      #selected-cat .image {
+        height: 100%;
       }
-      .selected-cat-container img {
-        height: 85%;
+      #selected-cat img {
+        max-height: calc(100% - 28px);
       }
       /* STYLES FOR THE LIST OF CATS */
       #cat-list {
         height: 34vh;
         display: flex;
       }
-      .image {
-        height: 100%;
-      }
-      .image img {
+      #cat-list img {
         width: 100%;
         object-fit: cover;
         height: calc(100% - 28px);
@@ -46,14 +43,15 @@
   <body>
     <div id="selected-cat">
       <h2>Please Select a cat</h2>
-      <div class="selected-cat-container">
-        <img src="./cat-placeholder.png" alt="cat silhouette">
-      </div>
+      <img src="./cat-placeholder.png" alt="cat silhouette">
     </div>
     <div id="cat-list"></div>
     <script>      
+      // Element Selectors
       var catContainer = document.getElementById("selected-cat");
       var catList = document.getElementById("cat-list");
+      var selectedCat = document.getElementById("selected-cat");
+
       var cats = [
         {
           id: 0,
@@ -93,10 +91,17 @@
       ];
       // Add cat images to DOM so eventListeners can work
       cats.forEach(function(cat) {
-        createCat(cat);
+        var newCat = createCatTemplate(cat, function() {          
+          // cat.clicks++;
+          // updateClicks(cat);
+          selectCat(cat);
+        });
+
+        // Add to HTML
+        catList.appendChild(newCat);
       });
 
-      function createCat(cat) {
+      function createCatTemplate(cat, eventListener) {
         // Create Div to put image and counter in
         var div = document.createElement("div");
 
@@ -105,7 +110,7 @@
 
         // Create text for cat name and number of clicks
         var header = document.createElement("h2");
-        header.id = "cat-header-" + cat.id;
+        header.classList.add("cat-header-" + cat.id);
         header.innerText = createImageHeader(cat);
 
         var image = createImage(cat);
@@ -114,30 +119,44 @@
         div.appendChild(header);
         div.appendChild(image);
 
-        // Add Event listener
-        image.addEventListener("click", function() {          
-          cat.clicks++;
-          updateClicks(cat);
-        });
+        // Add Event listener to image
+        image.addEventListener("click", eventListener);
 
-        // Add to HTML
-        catList.appendChild(div);
+        return div;
       };
       function createImage(cat) {
         // Create Image element with id and other attributes
         var image = document.createElement("img");
-        image.id = "cat-" + cat.id;
+        // image.id = "cat-" + cat.id;
         image.src = cat.url;
         image.alt = cat.description;
         return image;
       }
+     
+      function updateClicks(cat) {
+        // Since we're tracking a cat in the list and when it's selected
+        // We need to target the class so we can update the clicks both
+        // for the selected cat and its place in the list
+        var catHeadersToUpdate = document.getElementsByClassName("cat-header-" + cat.id);
+        var header = createImageHeader(cat);
+        for(var i = 0; i < catHeadersToUpdate.length; i++) {
+          catHeadersToUpdate[i].innerText = header;
+        }
+      }
       function createImageHeader(cat) {
         return cat.name + " - " + cat.clicks + " clicks";
-      }      
-      function updateClicks(cat) {
-        document.getElementById("cat-header-" + cat.id).innerText = createImageHeader(cat);
       }
-
+      function selectCat(cat) {
+        console.log(selectedCat);
+        var clickedCat = createCatTemplate(cat, function(){
+          cat.clicks++;
+          updateClicks(cat);
+        });
+        while(selectedCat.lastChild) {
+          selectedCat.removeChild(selectedCat.lastChild);
+        }
+        selectedCat.append(clickedCat);
+      }
     </script>
   </body>
 </html>
