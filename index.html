@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,23 +17,36 @@
       }
       /* STYLES FOR SELECTED CAT */
       #selected-cat {
-        height: 65vh;
+        height: 35vh;
       }
       #selected-cat .image {
         height: 100%;
       }
       #selected-cat img {
         max-height: calc(100% - 28px);
+        width: 100%;
+        object-fit: contain;
       }
       /* STYLES FOR THE LIST OF CATS */
       #cat-list {
-        height: 34vh;
+        /* height: 34vh; */
         display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+      }
+      #cat-list .image {
+        min-width: 100px;
+        max-width: 165px; 
       }
       #cat-list img {
         width: 100%;
-        object-fit: cover;
-        height: calc(100% - 28px);
+        /* object-fit: cover; */
+        /* height: calc(100% - 28px); */
+      }
+      @media screen and (min-width: 576px) {        
+        #selected-cat {
+          height: 65vh;
+        }
       }
     </style>
   </head>
