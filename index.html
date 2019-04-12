@@ -6,206 +6,27 @@
     <title>Cat Clicker</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        text-align: center;
-      }
-      h1, h2, h3, h4, h5, h6, p {
-        margin: 0;
-      }
-      /* STYLES FOR SELECTED CAT */
-      #selected-cat {
-        height: 35vh;
-      }
-      #selected-cat .image {
-        height: 100%;
-      }
-      #selected-cat img {
-        max-height: calc(100% - 28px);
-        width: 100%;
-        object-fit: contain;
-      }
-      /* STYLES FOR THE LIST OF CATS */
-      #cat-list {
-        /* height: 34vh; */
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-      }
-      #cat-list .image {
-        min-width: 100px;
-        max-width: 165px; 
-      }
-      #cat-list img {
-        width: 100%;
-        /* object-fit: cover; */
-        /* height: calc(100% - 28px); */
-      }
-      @media screen and (min-width: 576px) {        
-        #selected-cat {
-          height: 65vh;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
+    <button id="admin-button">Admin</button>
     <div id="selected-cat">
       <h2>Please Select a cat</h2>
       <img src="./cat-placeholder.png" alt="cat silhouette">
     </div>
     <div id="cat-list"></div>
-    <script>
-      (function(){
-        // Cats Model to hold the list of cats and
-        // the selected cat to click on
-        var model = {
-          cats: [
-              {
-                id: 0,
-                name: "Romulus",
-                description: "A cuddly cat",
-                url: "./romulus.jpg",
-                clicks: 0
-              },
-              {
-                id: 1,
-                name: "Remus",
-                description: "A fierce cat",
-                url: "./remus.jpg",
-                clicks: 0
-              },
-              {
-                id: 2,
-                name: "Brutus",
-                description: "He's very brutal and not very loyal",
-                url: "./brutus.jpg",
-                clicks: 0
-              },
-              {
-                id: 3,
-                name: "Caesar",
-                description: "A leader of cats",
-                url: "./caesar.jpg",
-                clicks: 0
-              },
-              {
-                id: 4,
-                name: "Octavian",
-                description: "The people's cat",
-                url: "./octavian.jpg",
-                clicks: 0
-              }
-            ],
-            selectedCat: {}
-          };
-        
-        var controller = {
-          // Create cat template
-          // Manage clicks to cat
-          // render views
-          updateClicks: function(cat) {
-            // Since we're tracking a cat in the list and when it's selected
-            // We need to target the class so we can update the clicks both
-            // for the selected cat and its place in the list
-            var catHeadersToUpdate = document.getElementsByClassName("cat-header-" + cat.id);
-            var header = this.createImageHeader(cat);
-            for(var i = 0; i < catHeadersToUpdate.length; i++) {
-              catHeadersToUpdate[i].innerText = header;
-            }
-          },
-          selectCat: function(cat) {
-            var clickedCat = this.createCatTemplate(cat, function(){
-              cat.clicks++;
-              updateClicks(cat);
-            });
-            while(model.selectedCat.lastChild) {
-              model.selectedCat.removeChild(model.selectedCat.lastChild);
-            }
-            // selectedCat.append(clickedCat);
-            views.clickArea.render();
-          },
-          createCatTemplate: function(cat, eventListener) {
-            // Create Div to put image and counter in
-            var div = document.createElement("div");
-
-            // Add class to change CSS styles
-            div.classList.add("image");
-
-            // Create text for cat name and number of clicks
-            var header = document.createElement("h2");
-            header.classList.add("cat-header-" + cat.id);
-            header.innerText = this.createImageHeader(cat);
-
-            var image = this.createImage(cat);
-
-            // Append header and image elements to div
-            div.appendChild(header);
-            div.appendChild(image);
-
-            // Add Event listener to image
-            image.addEventListener("click", eventListener);
-
-            return div;
-          },
-          createImage: function(cat) {
-            console.log(cat);
-            // Create Image element with id and other attributes
-            var image = document.createElement("img");
-            // image.id = "cat-" + cat.id;
-            image.src = cat.url;
-            image.alt = cat.description;
-            return image;
-          },
-          createImageHeader: function(cat) {
-            return cat.name + " - " + cat.clicks + " clicks";
-          },
-          init: function() {
-            views.init();
-          }
-        };
-
-        var views = {
-          list: {
-            init: function() {
-              this.catList = document.getElementById("cat-list");
-              this.render();
-            },
-            render: function() {
-              var that = this;
-              model.cats.forEach(function(cat) {
-                var newCat = controller.createCatTemplate(cat, function() {
-                  controller.selectCat(cat);
-                });
-
-                // Add to HTML
-                that.catList.appendChild(newCat);
-              });
-            }
-          },
-          clickArea: {
-            init: function() {
-              this.catContainer = document.getElementById("selected-cat");
-              this.render();
-            },
-            render: function() {
-              // Render the selectedCat
-              if (model.selectedCat !== {}) {
-                var selectedCatHtml = controller.createCatTemplate(model.selectedCat, function(){
-                  cat.clicks++;
-                  this.render();
-                });
-              }
-            }
-          },
-          init: function() {
-            this.clickArea.init();
-            this.list.init();
-          }
-        }
-        controller.init();
-      })();
-    </script>
+    <div id="admin-panel" class="hidden">
+      <form id="admin-form">
+        <input type="text" name="name" id="name" placeholder="New Name" autocomplete="off">
+        <input type="url" name="url" id="url" placeholder="New Url" autocomplete="off">
+        <input type="number" name="clicks" id="clicks" placeholder="Clicks" min="0" autocomplete="off">
+        <div class="buttons">
+          <input id="cancel-button" type="button" value="Cancel">
+          <input id="submit-button" type="submit" value="Submit">
+        </div>
+      </form>
+      <div class="overlay"></div>
+    </div>
+    <script src="app.js"></script>
   </body>
 </html>

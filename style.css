@@ -1,0 +1,74 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+/* STYLES FOR SELECTED CAT */
+#selected-cat {
+  height: 35vh;
+}
+#selected-cat .image {
+  height: 100%;
+}
+#selected-cat img {
+  max-height: calc(100% - 28px);
+  width: 100%;
+  object-fit: contain;
+}
+/* STYLES FOR THE LIST OF CATS */
+#cat-list {
+  /* height: 34vh; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+#cat-list .image {
+  min-width: 100px;
+  max-width: 165px; 
+}
+#cat-list img {
+  width: 100%;
+  /* object-fit: cover; */
+  /* height: calc(100% - 28px); */
+}
+#admin-panel {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#admin-form {
+  z-index: 10;
+}
+#admin-form > input {
+  display: block;
+  margin: 5px auto;
+  padding: 10px;
+  border: 0;
+}
+.buttons input {
+  padding: 10px 15px;
+}
+.overlay {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+.hidden {
+  visibility: hidden;
+}
+
+@media screen and (min-width: 576px) {        
+  #selected-cat {
+    height: 65vh;
+  }
+}
