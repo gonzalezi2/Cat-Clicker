@@ -54,8 +54,17 @@
         views.clickArea.render();
       }
     },
-    changeCat: function(cat) {
-
+    updateCat: function(cat) {
+      model.cats.forEach(function(currCat){
+        if(model.selectedCat.id === currCat.id) {
+          model.selectedCat.name = currCat.name = cat.name;
+          model.selectedCat.url = currCat.url = cat.url;
+          model.selectedCat.clicks = currCat.clicks = cat.clicks;
+        }
+      });
+      views.clickArea.render();
+      // views.clickArea.update(model.selectedCat);
+      views.list.render();
     },
     createCatTemplate: function(cat, eventListener) {
       // Create Div to put image and counter in
@@ -91,6 +100,20 @@
     createImageHeader: function(cat) {
       return cat.name + " - " + cat.clicks + " clicks";
     },
+    clearForm: function() {
+      views.admin.adminForm.elements.name.value = '';
+      views.admin.adminForm.elements.url.value = '';
+      views.admin.adminForm.elements.clicks.value = '';
+    },
+    toggleVisibility: function() {
+      views.admin.adminPanel.classList.toggle("hidden");
+    },
+    editCat: function() {
+      views.admin.adminForm.elements.name.value = model.selectedCat.name;
+      views.admin.adminForm.elements.url.value = model.selectedCat.url;
+      views.admin.adminForm.elements.clicks.value = model.selectedCat.clicks;
+      controller.toggleVisibility();
+    },
     init: function() {
       views.init();
     }
@@ -104,8 +127,14 @@
       },
       render: function() {
         var that = this;
+        while(that.catList.lastChild) {
+          that.catList.removeChild(that.catList.lastChild);
+        }
         model.cats.forEach(function(cat) {
           var newCat = controller.createCatTemplate(cat, function() {
+            if (Object.keys(model.selectedCat).length === 0) {
+              views.admin.adminButton.classList.remove('hidden');
+            }
             controller.selectCat(cat);
           });
 
@@ -145,17 +174,27 @@
         this.formValue = document.getElementById("admin-form");
         this.adminPanel = document.getElementById("admin-panel");
         this.adminButton = document.getElementById("admin-button");
+        this.cancelButton = document.getElementById("cancel-button");
+        this.adminForm = document.getElementById("admin-form");
 
-        this.adminButton.addEventListener('click', views.admin.toggleVisibility.bind(this));
+        this.adminButton.addEventListener('click', function(){
+          controller.editCat();
+        });
+        this.cancelButton.addEventListener('click', function(){
+          controller.clearForm();
+          controller.toggleVisibility();
+        });
         this.formValue.addEventListener('submit', function(event) {
           event.preventDefault();
-          var name = event.target.elements.name.value;
-          var url = event.target.elements.url.value;
-          var clicks = event.target.elements.clicks.value;
+          var newCat = {
+            name: event.target.elements.name.value,
+            url: event.target.elements.url.value,
+            clicks: event.target.elements.clicks.value
+          };
+          controller.updateCat(newCat);
+          controller.clearForm();
+          controller.toggleVisibility();
         });
-      },
-      toggleVisibility: function() {
-        this.adminPanel.classList.toggle("hidden");
       }
     },
     init: function() {

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <button id="admin-button">Admin</button>
+    <button id="admin-button" class="hidden">Admin</button>
     <div id="selected-cat">
       <h2>Please Select a cat</h2>
       <img src="./cat-placeholder.png" alt="cat silhouette">
@@ -18,7 +18,7 @@
     <div id="admin-panel" class="hidden">
       <form id="admin-form">
         <input type="text" name="name" id="name" placeholder="New Name" autocomplete="off">
-        <input type="url" name="url" id="url" placeholder="New Url" autocomplete="off">
+        <input type="text" name="url" id="url" placeholder="New Url" autocomplete="off">
         <input type="number" name="clicks" id="clicks" placeholder="Clicks" min="0" autocomplete="off">
         <div class="buttons">
           <input id="cancel-button" type="button" value="Cancel">
